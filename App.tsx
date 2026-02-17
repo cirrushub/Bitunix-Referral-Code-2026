@@ -239,7 +239,7 @@ const HomePage: React.FC = () => {
   const [content, setContent] = useState<MarketingContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const REG_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=github";
+  const REG_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=github-article";
 
   useEffect(() => {
     const loadContent = async () => {

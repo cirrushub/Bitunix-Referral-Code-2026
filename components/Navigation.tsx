@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { trackEvent } from '../lib/analytics';
 
 const Navigation: React.FC = () => {
-  const REG_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=github";
+  const REG_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=github-article";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
