@@ -33,7 +33,7 @@ export function updateSEO({
   path: string;
 }) {
   document.title = title;
-  const url = `${BASE_URL}/#${path}`;
+  const url = `${BASE_URL}${path}`;
 
   setMeta('meta[name="description"]', 'content', description);
   setMeta('meta[property="og:title"]', 'content', title);
