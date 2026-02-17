@@ -15,7 +15,7 @@ interface GitHubTreeItem {
   url: string;
 }
 
-const REPO_OWNER = 'alphaonchain';
+const REPO_OWNER = 'OrderBookX';
 const REPO_NAME = 'articles';
 const BRANCH = 'main';
 const CACHE_KEY = 'blog_article_list';
