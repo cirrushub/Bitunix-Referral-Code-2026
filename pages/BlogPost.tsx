@@ -6,6 +6,7 @@ import rehypeRaw from 'rehype-raw';
 import { fetchArticleList, fetchArticleContent, type ArticleFile } from '../lib/github-api';
 import { parseFrontmatter } from '../lib/frontmatter';
 import { trackEvent, updateSEO } from '../lib/analytics';
+import { rewriteUtmParams } from '../lib/rewrite-utm';
 
 const AUTHOR = 'AlphaOnChain';
 const REFERRAL_CODE = 'BITUNIXBONUS';
@@ -38,7 +39,7 @@ const CTAWidget = ({ position = 'inline' }: { position?: string }) => (
 );
 
 function processMarkdownContent(md: string): string {
-  let processed = md;
+  let processed = rewriteUtmParams(md);
 
   processed = processed.replace(/<\/?(header|main|section|footer|nav|aside)[^>]*>\s*/gi, '\n');
   processed = processed.replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '\n\n');

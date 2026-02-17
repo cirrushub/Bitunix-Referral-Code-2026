@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { fetchArticleList, fetchArticleContent, type ArticleFile } from '../lib/github-api';
 import { parseFrontmatter } from '../lib/frontmatter';
 import { trackEvent, updateSEO } from '../lib/analytics';
+import { rewriteUtmParams } from '../lib/rewrite-utm';
 
 const PER_PAGE = 24;
 const ENRICHED_CACHE_KEY = 'blog_articles_enriched';
@@ -11,7 +12,7 @@ const ENRICHED_CACHE_TTL = 10 * 60 * 1000;
 const REGISTER_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=blog-page";
 
 function extractExcerpt(raw: string, maxLen = 120): string {
-  const { content } = parseFrontmatter(raw);
+  const { content } = parseFrontmatter(rewriteUtmParams(raw));
   let text = content
     .replace(/^[^\n]+\n=+\s*\n?/m, '')
     .replace(/^#\s+[^\n]+\n*/m, '')
