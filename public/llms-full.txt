@@ -1,0 +1,66 @@
+# Bitunix Referral Code 2026 — Full Documentation
+
+## Overview
+This is a referral landing page for the Bitunix cryptocurrency exchange. The referral code BITUNIXBONUS unlocks exclusive bonuses and VIP privileges for new users.
+
+## Referral Details
+- Referral Code: BITUNIXBONUS
+- Invite Code: ab9nr3
+- Registration URL: https://www.bitunix.com/register?vipCode=BITUNIXBONUS&inviteCode=ab9nr3
+
+## Bonus Breakdown
+
+### Welcome Bonus: Up to 7,700 USDT
+- Sign-up bonus + deposit rewards + trading rewards combined
+- Bonus credits must be used within 90 days
+
+### Fee Discount: 77.7%
+- Applied automatically with referral code
+- Standard VIP 0 fee is 0.02%/0.06% — you start lower
+
+### VIP 2: Instant Status for 30 Days
+- Spot fees: 0.06%/0.08% (Maker/Taker)
+- Futures fees: 0.016%/0.05% (Maker/Taker)
+- Weekly Mystery Box rewards up to 10,000 USDT
+
+### VIP 3: Available with $375 Deposit
+- Spot fees: 0.035%/0.06% (Maker/Taker)
+- Futures fees: 0.014%/0.04% (Maker/Taker)
+- Guaranteed Stop-Loss included
+- VIP Earn Products access
+- Weekly Mystery Box up to 500 USDT
+
+## How to Claim
+1. Click the registration link or visit bitunix.com
+2. Enter code BITUNIXBONUS during registration (cannot be added later)
+3. Complete KYC verification & deposit minimum $100
+4. Trade $1,000 volume within 60 days to unlock bonus credits
+5. Optional: Deposit $375 to upgrade to VIP 3
+
+## Platform Trust & Security
+- 3M+ global users
+- 1,000+ trading pairs
+- $5B+ daily volume
+- BBB Security Rating
+- No. 7 global derivatives exchange
+- Fireblocks + Elliptic security infrastructure
+- $42M insurance coverage + $5M Nemean Services policy
+- $30M USDC Care Fund user protection reserve
+- Transparent Proof of Reserves
+- Licensed: US MSB, Canada MSB, Philippines VASP
+- Zero security breaches since launch
+
+## Blog
+The site includes a blog section with 200+ crypto articles covering:
+- Market analysis and news
+- Exchange comparisons
+- Trading guides (futures, spot, DCA, copy trading)
+- Bitunix reviews, fees, and security
+- Automated investing strategies
+- Promotions and giveaways
+
+## Technical Details
+- Built with React 19, TypeScript, Vite
+- Hash-based routing (/#/blog, /#/blog/:slug)
+- Articles sourced from GitHub (alphaonchain/articles)
+- Google Analytics 4 + Microsoft Clarity tracking
