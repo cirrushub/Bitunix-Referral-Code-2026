@@ -120,6 +120,19 @@
             animation: icon-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
+        /* Ramadan theme */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes ramadan-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(5deg); }
+        }
+        .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+        .animate-ramadan-float { animation: ramadan-float 6s ease-in-out infinite; }
+        .star-4 { clip-path: polygon(50% 0%, 60% 38%, 100% 50%, 60% 62%, 50% 100%, 40% 62%, 0% 50%, 40% 38%); }
+
         /* Prose overrides for blog */
         .prose-blog a {
           color: #60a5fa;

@@ -290,6 +290,27 @@ const HomePage: React.FC = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-blue-600/10 blur-[180px] rounded-full"></div>
         </div>
 
+        {/* Ramadan Decorations */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+          {/* Crescent Moon */}
+          <div className="absolute top-[8%] right-[6%] md:right-[12%] animate-ramadan-float">
+            <div className="relative w-12 h-12 md:w-16 md:h-16">
+              <div className="absolute inset-0 rounded-full bg-amber-400 shadow-[0_0_40px_rgba(251,191,36,0.25)]" />
+              <div className="absolute -top-1 -right-1.5 w-10 h-10 md:w-[54px] md:h-[54px] rounded-full bg-slate-950" />
+            </div>
+          </div>
+          {/* Stars near moon */}
+          <div className="absolute top-[5%] right-[18%] md:right-[22%] w-2 h-2 bg-amber-300 star-4 animate-twinkle" />
+          <div className="absolute top-[14%] right-[14%] md:right-[19%] w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_rgba(252,211,77,0.6)] animate-twinkle" style={{ animationDelay: '0.8s' }} />
+          <div className="absolute top-[4%] right-[12%] md:right-[16%] w-1 h-1 rounded-full bg-amber-200 shadow-[0_0_4px_rgba(252,211,77,0.5)] animate-twinkle" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute top-[18%] right-[22%] md:right-[25%] w-1 h-1 rounded-full bg-amber-200/60 animate-twinkle" style={{ animationDelay: '0.3s' }} />
+          <div className="absolute top-[6%] right-[26%] md:right-[28%] w-1.5 h-1.5 bg-amber-300/80 star-4 animate-twinkle" style={{ animationDelay: '2s' }} />
+          {/* Distant stars left side */}
+          <div className="absolute top-[10%] left-[10%] md:left-[16%] w-1 h-1 rounded-full bg-amber-200/40 animate-twinkle" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-[6%] left-[22%] w-1.5 h-1.5 bg-amber-300/30 star-4 animate-twinkle" style={{ animationDelay: '1.8s' }} />
+          <div className="absolute top-[16%] left-[6%] w-1 h-1 rounded-full bg-amber-200/25 animate-twinkle" style={{ animationDelay: '1.3s' }} />
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-400 text-xs font-black uppercase tracking-widest mb-10 animate-float">
