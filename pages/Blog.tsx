@@ -51,15 +51,15 @@ function timeAgo(dateStr: string): string {
 }
 
 async function fetchEnrichedArticles(): Promise<ArticleFile[]> {
+  const articles = await fetchArticleList();
+
   const cached = sessionStorage.getItem(ENRICHED_CACHE_KEY);
   if (cached) {
     try {
-      const { data, timestamp } = JSON.parse(cached);
-      if (Date.now() - timestamp < ENRICHED_CACHE_TTL) return data;
+      const { data, timestamp, count } = JSON.parse(cached);
+      if (count === articles.length && Date.now() - timestamp < ENRICHED_CACHE_TTL) return data;
     } catch {}
   }
-
-  const articles = await fetchArticleList();
   const batchSize = 20;
 
   for (let i = 0; i < articles.length; i += batchSize) {
@@ -89,7 +89,7 @@ async function fetchEnrichedArticles(): Promise<ArticleFile[]> {
 
   sessionStorage.setItem(
     ENRICHED_CACHE_KEY,
-    JSON.stringify({ data: articles, timestamp: Date.now() })
+    JSON.stringify({ data: articles, timestamp: Date.now(), count: articles.length })
   );
 
   return articles;
