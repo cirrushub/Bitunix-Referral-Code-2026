@@ -31,7 +31,8 @@ function titleFromFilename(filename: string): string {
   return filename
     .replace(/\.md$/i, '')
     .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/^(\w+)\s+\1\b/i, '$1');
 }
 
 export async function fetchArticleList(): Promise<ArticleFile[]> {
