@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchArticleList, fetchArticleContent, type ArticleFile } from '../lib/github-api';
 import { parseFrontmatter } from '../lib/frontmatter';
@@ -6,8 +6,8 @@ import { trackEvent, updateSEO } from '../lib/analytics';
 import { rewriteUtmParams } from '../lib/rewrite-utm';
 
 const PER_PAGE = 24;
-const ENRICHED_CACHE_KEY = 'blog_articles_enriched';
-const ENRICHED_CACHE_TTL = 10 * 60 * 1000;
+const CONCURRENCY = 20;
+const META_CACHE_KEY = 'blog_article_meta';
 
 const REGISTER_LINK = "https://bitunix.com/register?vipCode=BITUNIXBONUS&utm_source=3rdparty&utm_medium=blog-page";
 
@@ -50,49 +50,32 @@ function timeAgo(dateStr: string): string {
   return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
 }
 
-async function fetchEnrichedArticles(): Promise<ArticleFile[]> {
-  const articles = await fetchArticleList();
+function loadMetaCache(): Record<string, { date?: string; excerpt?: string }> {
+  try {
+    return JSON.parse(sessionStorage.getItem(META_CACHE_KEY) || '{}');
+  } catch { return {}; }
+}
 
-  const cached = sessionStorage.getItem(ENRICHED_CACHE_KEY);
-  if (cached) {
-    try {
-      const { data, timestamp, count } = JSON.parse(cached);
-      if (count === articles.length && Date.now() - timestamp < ENRICHED_CACHE_TTL) return data;
-    } catch {}
-  }
-  const batchSize = 20;
+function saveMetaCache(meta: Record<string, { date?: string; excerpt?: string }>) {
+  sessionStorage.setItem(META_CACHE_KEY, JSON.stringify(meta));
+}
 
-  for (let i = 0; i < articles.length; i += batchSize) {
-    await Promise.all(
-      articles.slice(i, i + batchSize).map(async (article) => {
+async function enrichBatch(articles: ArticleFile[]): Promise<void> {
+  for (let i = 0; i < articles.length; i += CONCURRENCY) {
+    await Promise.allSettled(
+      articles.slice(i, i + CONCURRENCY).map(async (article) => {
         try {
           const raw = await fetchArticleContent(article.path);
           const { frontmatter } = parseFrontmatter(raw);
           article.date = (frontmatter.date as string) || '';
           article.excerpt = extractExcerpt(raw);
         } catch {
-          article.date = '';
-          article.excerpt = '';
+          article.date = article.date || '';
+          article.excerpt = article.excerpt || '';
         }
       })
     );
   }
-
-  const today = new Date().toISOString().split('T')[0];
-  articles.sort((a, b) => {
-    const dateA = a.date || today;
-    const dateB = b.date || today;
-    const cmp = dateB.localeCompare(dateA);
-    if (cmp !== 0) return cmp;
-    return a.title.localeCompare(b.title);
-  });
-
-  sessionStorage.setItem(
-    ENRICHED_CACHE_KEY,
-    JSON.stringify({ data: articles, timestamp: Date.now(), count: articles.length })
-  );
-
-  return articles;
 }
 
 function ArticleCard({ article }: { article: ArticleFile }) {
@@ -125,6 +108,7 @@ export default function Blog() {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [visible, setVisible] = useState(PER_PAGE);
+  const enrichedRef = useRef(new Set<string>());
 
   useEffect(() => {
     updateSEO({
@@ -133,11 +117,47 @@ export default function Blog() {
       path: '/blog',
     });
     trackEvent('page_view', { page_title: 'Blog', page_path: '/blog' });
-    fetchEnrichedArticles()
-      .then(setArticles)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
+
+    fetchArticleList()
+      .then((list) => {
+        const meta = loadMetaCache();
+        for (const a of list) {
+          if (meta[a.slug]) {
+            a.date = meta[a.slug].date;
+            a.excerpt = meta[a.slug].excerpt;
+            enrichedRef.current.add(a.slug);
+          }
+        }
+        setArticles(list);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setError(e.message);
+        setLoading(false);
+      });
   }, []);
+
+  // Progressive enrichment: only fetch content for visible articles
+  useEffect(() => {
+    if (articles.length === 0) return;
+    const toEnrich = articles
+      .slice(0, visible)
+      .filter((a) => !enrichedRef.current.has(a.slug));
+    if (toEnrich.length === 0) return;
+
+    let cancelled = false;
+    enrichBatch(toEnrich).then(() => {
+      if (cancelled) return;
+      const meta = loadMetaCache();
+      for (const a of toEnrich) {
+        enrichedRef.current.add(a.slug);
+        meta[a.slug] = { date: a.date, excerpt: a.excerpt };
+      }
+      saveMetaCache(meta);
+      setArticles((prev) => prev.map((a) => ({ ...a })));
+    });
+    return () => { cancelled = true; };
+  }, [articles.length, visible]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return articles;
